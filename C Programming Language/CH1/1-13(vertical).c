@@ -1,0 +1,62 @@
+#include <stdio.h>
+
+#define TRUE  1    /* inside a word */
+#define FALSE 0    /* outside a word */
+
+int main(void)
+{
+	int c, i, j, count, interrupt, longestBar;
+	int ndigit[5];
+	count = interrupt = 0;
+	for(i = 0; i < 5; ++i)
+	    ndigit[i] = 0;
+	    
+	while((c = getchar()) != EOF)
+	    if (c == ' ' || c == '\n' || c == '\t')
+	        interrupt = TRUE;
+	    else
+	        interrupt = FALSE;
+	    
+	    if (!interrupt)
+	        ++count;
+	    
+	    if (interrupt)
+	        if (count < 5)
+	            ++ndigit[0];
+	        else if (count >= 5 && count < 10)
+	            ++ndigit[1];
+	        else if (count >= 11 && count < 15)
+	            ++ndigit[2];
+	        else if (count >= 15 && count < 20)
+	            ++ndigit[3];
+	        else
+	            ++ndigit[4];
+	       count = 0;
+	 
+	 /* find the longestBar */
+    longestBar = ndigit[0];
+	for (i = 0; i < 5; ++i)      
+		if (ndigit[i] > longestBar)
+			longestBar = ndigit[i];
+    			
+	/* print vertical histogram  */
+	while (longestBar > 0) {
+		for (i = 0; i < 5; ++i)
+			if (ndigit[i] != 0) {
+				if (ndigit[i] < longestBar)
+					printf(" %2c", ' ');
+				else
+					printf(" %2c", '*');
+			}
+		printf("\n");
+		--longestBar;
+	}
+	
+	/* print value of each element (bar) */
+	for (i = 0; i < 5; ++i)
+		if (ndigit[i] != 0)
+			printf(" %2i", ndigit[i]);
+	printf("\n");
+	
+	return 0;
+}
